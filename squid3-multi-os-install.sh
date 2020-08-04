@@ -16,6 +16,10 @@ if cat /etc/os-release | grep PRETTY_NAME | grep "Ubuntu 18.04"; then
     /sbin/iptables-save
     service squid restart
     systemctl enable squid
+    /usr/bin/apt -y install resolvconf
+    echo -e "nameserver 1.1.1.1" >> /etc/resolvconf/resolv.conf.d/head
+    echo -e "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/head
+    service resolvconf restart
 elif cat /etc/os-release | grep PRETTY_NAME | grep "Ubuntu 16.04"; then
     /usr/bin/apt update
     /usr/bin/apt -y install apache2-utils squid3
@@ -107,3 +111,5 @@ echo "Done"
 
 fi
 /usr/bin/htpasswd -b -c /etc/squid/passwd proxyuser proxypass
+
+
