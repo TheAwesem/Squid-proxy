@@ -1,8 +1,5 @@
 #!/bin/bash
 
-SQUID_USER="semind"
-SQUID_PASS="semind"
-
 # Squid Installer
 
 /bin/rm -rf /etc/squid
@@ -42,7 +39,7 @@ fi
 
 
 echo "Adding user ${SQUID_USER}"
-/usr/bin/htpasswd -b -c /etc/squid/passwd $SQUID_USERNAME $SQUID_PASSWORD
+/usr/bin/htpasswd -b -c /etc/squid/passwd "semind" "semind"
 
 systemctl enable squid
 systemctl restart squid
