@@ -8,7 +8,7 @@
 touch /etc/squid/passwd
 /bin/rm -f /etc/squid/squid.conf
 /usr/bin/touch /etc/squid/blacklist.acl
-/usr/bin/wget --no-check-certificate -O /etc/squid/squid.conf https://raw.githubusercontent.com/NanoProxies/Proxy-Creator/master/squid.conf
+/usr/bin/wget --no-check-certificate -O /etc/squid/squid.conf https://raw.githubusercontent.com/TheAwesem/Squid-proxy/master/squid.conf
 /sbin/iptables -I INPUT -p tcp --dport SQUID_PORT -j ACCEPT
 /sbin/iptables-save
 
