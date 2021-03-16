@@ -9,7 +9,7 @@ touch /etc/squid/passwd
 /bin/rm -f /etc/squid/squid.conf
 /usr/bin/touch /etc/squid/blacklist.acl
 /usr/bin/wget --no-check-certificate -O /etc/squid/squid.conf https://raw.githubusercontent.com/TheAwesem/Squid-proxy/master/squid.conf
-/sbin/iptables -I INPUT -p tcp --dport SQUID_PORT -j ACCEPT
+/sbin/iptables -I INPUT -p tcp --dport 3128 -j ACCEPT
 /sbin/iptables-save
 
 
@@ -26,9 +26,13 @@ SQUID_CONFIG="\n"
 for IP_ADDR in ${IP_ALL_ARRAY[@]}; do
 echo "adding ${IP_ADDR}"
 ACL_NAME="proxy_ip_${IP_ADDR//\./_}"
-SQUID_CONFIG+="acl ${ACL_NAME} myip ${IP_ADDR}\n"
+PORT_NAME="ip_${IP_ADDR//\./_}"
+SQUID_CONFIG+="http_port ${IP_ADDR}:3128 name=${PORT_NAME}\n"
+SQUID_CONFIG+="acl ${ACL_NAME} myportname ${PORT_NAME} src ${IP_ADDR}\n"
+SQUID_CONFIG+="http_access allow ${ACL_NAME} password\n"
 SQUID_CONFIG+="tcp_outgoing_address ${IP_ADDR} ${ACL_NAME}\n\n"
 done
+SQUID_CONFIG+="http_access deny all"
 
 echo "Saving changes"
 echo -e $SQUID_CONFIG >> /etc/squid/squid.conf
